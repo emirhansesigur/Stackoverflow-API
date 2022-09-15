@@ -5,12 +5,12 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     name : {
         type: String,
-        required: [true, "Please provide a name"],
-    }
+        //required: [true, "Please provide a name"]
+    },
     email: {
         type: String,
-        required: [true, "Please provide an email"],
-        unique: [true, "Please try different email"]
+        //required: [true, "Please provide an email"],
+        unique: [true, "Please try different email"],
         match: [
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             "Please provide a valid name"
@@ -24,7 +24,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         minlength: [6, "enter a password with min lenght 6"],
-        required: [true, "Please provide a password"],
+        //required: [true, "Please provide a password"],
         select: false //degerleri cekmek istedigimiz zaman sifre alınamayacak
     },
     createdAt: {
@@ -54,4 +54,8 @@ const UserSchema = new Schema({
 });
 
 // Save user to mongodb database
-module.export = 
+const User = mongoose.model("User",UserSchema ) // burada "User" yazdık  amam users kollection ı olusturacak
+
+module.export =  User
+
+
