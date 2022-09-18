@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -52,6 +52,25 @@ const UserSchema = new Schema({
         default: false
     }
 });
+
+UserSchema.pre("save", function(next){
+    console.log(this);
+    // mongoose un fonksyonu imis isModified
+    // tam oturmadi arastirrrrrr
+    if(this.isModified("password")){
+        next();
+        console.log("password was not changed :D");
+    }
+    bcrypt.genSalt(10, (err, salt)=>{
+        if(err) next(err);
+        bcrypt.hash(this.password, salt, (err, hash)=>{
+            if(err) next(err);
+            this.password = hash;
+            next()
+        });
+    });
+});
+
 
 // Save user to mongodb database
 const User = mongoose.model("User",UserSchema ) // burada "User" yazdık  amam users kollection ı olusturacak
