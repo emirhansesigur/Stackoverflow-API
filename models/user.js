@@ -56,6 +56,6 @@ const UserSchema = new Schema({
 // Save user to mongodb database
 const User = mongoose.model("User",UserSchema ) // burada "User" yazdık  amam users kollection ı olusturacak
 
-module.export =  User
+module.exports =  User
 
 

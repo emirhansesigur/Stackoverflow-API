@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require("dotenv")
 const index = require("./routers/index.js");
 const connectDatabase = require("./helpers/database/connectDatabase.js");
+const customeErrorHandler = require("./middlewares/error/customErrorHandler");
 
 // config in nerede oldugunu gosterecegiz.
 dotenv.config({
@@ -18,9 +19,8 @@ const PORT = process.env.PORT;
 // middleware yapıyore
 app.use("/api" , index);
 
-app.get("/",(req,res)=>{
-    res.send("/ is used")
-})
+app.use(customeErrorHandler)
+
 
 app.listen(5000, ()=>{
     console.log(`started on ${PORT}`);
