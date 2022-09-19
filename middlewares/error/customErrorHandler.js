@@ -12,6 +12,9 @@ const customErrorHandler = (err,req,res,next) => {
     if(customError.message === "validation error") {
         customError = new CustomError("Validation Syntax",12122);
     }
+    if(customError.code === 11000){
+        customError = new CustomError("duplicate key error. Please check your input", 400);
+    }
 
     console.log(customError.message, customError.status)
 

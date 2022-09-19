@@ -12,25 +12,6 @@ const register =asyncErrorWrapper ( async function (req, res, next){
     
     const {name, email, password, role} = req.body;
 
-// before asyncErrorWrapper
-// try{    
-//     const user = await User.create({
-//         name,
-//         email,
-//         password
-//     });
-
-//     res
-//     .status(200)
-//     .json({
-//         success: true,
-//         data: user
-//     });
-    
-// }
-// catch(err){
-//     return next(new CustomError("validation error",123))
-// }
 
 
 // after asyncErrorWrapper    
@@ -41,6 +22,9 @@ const register =asyncErrorWrapper ( async function (req, res, next){
         role
     });
 
+    const token = user.generateJwtFromUser();
+    
+    console.log(token)
     res
     .status(200)
     .json({
@@ -63,3 +47,25 @@ module.exports = { // fazlaca fonksyonu boyle dondurecegimiz icin
     register,
     errorTest
 };
+
+
+
+// before asyncErrorWrapper
+// try{    
+//     const user = await User.create({
+//         name,
+//         email,
+//         password
+//     });
+
+//     res
+//     .status(200)
+//     .json({
+//         success: true,
+//         data: user
+//     });
+    
+// }
+// catch(err){
+//     return next(new CustomError("validation error",123))
+// }
