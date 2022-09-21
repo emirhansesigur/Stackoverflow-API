@@ -57,14 +57,16 @@ const UserSchema = new Schema({
 // UserSchema Methods
 UserSchema.methods.generateJwtFromUser = function(){
     const {JWT_SECRET_KEY, JWT_EXPIRE} = process.env;
+    //const JWT_SECRET_KEY = "emir";
+    //const JWT_EXPIRE = "1000s";
 
     const payload = {
         id : this._id, // burayi arastir.
         name : this.name
     };
-// jwt.sign(payload, secretOrPrivateKey, [options, callback])
+    
+    //jwt.sign(payload, secretOrPrivateKey, [options, callback])
     const token = jwt.sign(payload, JWT_SECRET_KEY, {
-        algorithm : "HS256",
         expiresIn : JWT_EXPIRE
     });
     return token;

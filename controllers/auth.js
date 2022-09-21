@@ -1,14 +1,14 @@
 const User = require("../models/user") // {User} yaparak çözdük
 const CustomError = require("../helpers/error/CustomError")
 const asyncErrorWrapper = require("express-async-handler");
-const sendJwtToClient = require("../helpers/authorization/sendJwtToClient")
+const {sendJwtToClient} = require("../helpers/authorization/tokenHelpers")
 // Save user to mongodb database
 
 // async çöz
 // sonra da gercek regester alacak hale getir. verileri postman den ver :D
 // kolay gelsin
 
-const register =asyncErrorWrapper ( async function (req, res, next){
+const register = asyncErrorWrapper ( async function (req, res, next){
     
     const {name, email, password, role} = req.body;
 
@@ -27,15 +27,13 @@ const register =asyncErrorWrapper ( async function (req, res, next){
 
 })
 
-const errorTest = (req, res, next)=>{
-    return next(new TypeError("Type Error"))
-    
+const tokenTest = (req, res, next)=>{
+    res.send("Welcome bizim oglan")
 }
-
 
 module.exports = { // fazlaca fonksyonu boyle dondurecegimiz icin
     register,
-    errorTest
+    tokenTest
 };
 
 
