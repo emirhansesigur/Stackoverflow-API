@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: [true, "Please provide an email"],
-        unique: true,
+        //unique: true,
         match: [
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             "Please provide a valid name"
@@ -61,7 +61,7 @@ UserSchema.methods.generateJwtFromUser = function(){
     //const JWT_EXPIRE = "1000s";
 
     const payload = {
-        id : this._id, // burayi arastir.
+        id : this._id,
         name : this.name
     };
     
@@ -72,28 +72,27 @@ UserSchema.methods.generateJwtFromUser = function(){
     return token;
 }
 
+// this kaydedilmeye hazır user ı gosteriyor. bunu unutma
 
 UserSchema.pre("save", function(next){
-    console.log(this);
-    // mongoose un fonksyonu imis isModified
-    // tam oturmadi arastirrrrrr
-    if(this.isModified("password")){
-        next();
+    if(!this.isModified("password")){
         console.log("password was not changed :D");
+        next();
     }
     bcrypt.genSalt(10, (err, salt)=>{
         if(err) next(err);
+        
         bcrypt.hash(this.password, salt, (err, hash)=>{
             if(err) next(err);
             this.password = hash;
-            next()
-        });
+            next();
+        })
     });
-});
 
+})
 
 // Save user to mongodb database
-const User = mongoose.model("User",UserSchema ) // burada "User" yazdık  amam users kollection ı olusturacak
+const User = mongoose.model("User",UserSchema ) // burada "User" yazdık ama users kollection ı olusturacak
 
 module.exports =  User
 
