@@ -2,6 +2,7 @@ const User = require("../models/user") // {User} yaparak çözdük
 const CustomError = require("../helpers/error/CustomError")
 const asyncErrorWrapper = require("express-async-handler");
 const {sendJwtToClient} = require("../helpers/authorization/tokenHelpers")
+const {validateUserInput, comparePassword} = require("../helpers/input/inputHelper");
 // Save user to mongodb database
 
 // async çöz
@@ -27,13 +28,46 @@ const register = asyncErrorWrapper ( async function (req, res, next){
 
 })
 
-const tokenTest = (req, res, next)=>{
-    res.send("Welcome bizim oglan")
+const getUser = (req, res, next)=>{
+    
+    res.json({
+        success: true,
+        data :{
+            name: req.user.name,
+            id: req.user.id
+        }
+    })
+    
+
+
 }
+
+const login = asyncErrorWrapper ( async function (req, res, next){
+    const {email, password } = req.body;
+
+    if(validateUserInput(email, password) == undefined){
+        next(new CustomError("Check you input", 400));
+    }
+    
+    const user = await User.findOne({ email }).select("+password") // User bi collection, hepsini iceriyor gibi dusun email gittik bulduk
+
+    //console.log(user);
+    if(!comparePassword(password, user.password)){
+        return next(new CustomError("Please check your credentials",400))
+    }
+
+    sendJwtToClient(user, res);
+    
+
+        
+
+
+})
 
 module.exports = { // fazlaca fonksyonu boyle dondurecegimiz icin
     register,
-    tokenTest
+    getUser,
+    login
 };
 
 

@@ -29,10 +29,17 @@ const getAccessToRoute = (req, res, next) =>{
             if(err){
                 return next(console.log(new CustomError(err,100)));
             }
-            else{
-                console.log(decodedToken);
-                next();
-            }
+            // buradaki else i kaldırdınn
+            
+            console.log(decodedToken);
+            
+            req.user = { // boyle bir degisken olusturuluyor her yerden erisebilmek icin
+                id : decodedToken.id,
+                name : decodedToken.name
+            };
+
+            next();
+            
         });
 
 };
