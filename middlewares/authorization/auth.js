@@ -25,7 +25,7 @@ const getAccessToRoute = (req, res, next) =>{
         
         // -------- CALISAN KOD
         console.log(accessToken);
-        jwt.verify(accessToken,process.env.JWT_SECRET_KEY,(err,decodedToken)=>{
+        jwt.verify(accessToken,process.env.JWT_SECRET_KEY,(err,decodedToken)=>{ // dogrula
             if(err){
                 return next(console.log(new CustomError(err,100)));
             }

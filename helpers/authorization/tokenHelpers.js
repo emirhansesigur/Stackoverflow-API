@@ -1,7 +1,7 @@
 //res.cookie(name, value [, options])
 
 const sendJwtToClient = (user, res) =>{
-    const {JWS_COOKIE, NODE_ENV} = process.env;
+    const {JWT_COOKIE_EXPIRE, NODE_ENV} = process.env;
 
     const token = user.generateJwtFromUser();
     
@@ -10,7 +10,7 @@ const sendJwtToClient = (user, res) =>{
     .cookie("access_Token", token,{
         httpOnly: true,
         secure: NODE_ENV === "development" ? false : true,
-        expires : new Date(Date.now() + parseInt(JWS_COOKIE) * 1000 * 60)
+        expires : new Date(Date.now() + parseInt(JWT_COOKIE_EXPIRE) * 1000 * 60)
 })
     .json({
         success: true,
