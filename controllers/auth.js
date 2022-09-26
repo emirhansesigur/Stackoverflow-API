@@ -82,11 +82,20 @@ const logout = asyncErrorWrapper ( async function (req, res, next){
 
 const imageUpload = asyncErrorWrapper ( async function (req, res, next){
 
+    // updataing the image'a name in the server
+    const user = await User.findOneAndUpdate(req.user.id , {
+        "profile_image" : req.savedProfileImage
+    } , {
+        new: true,
+        runValidators: true
+    });
+
     res
     .status(200)
     .json({
         success: true,
-        message: "foto is uploaded successfully"
+        message: "foto is uploaded successfully",
+        data: user
     })
 
 
