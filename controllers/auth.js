@@ -80,11 +80,24 @@ const logout = asyncErrorWrapper ( async function (req, res, next){
 })
 })
 
+const imageUpload = asyncErrorWrapper ( async function (req, res, next){
+
+    res
+    .status(200)
+    .json({
+        success: true,
+        message: "foto is uploaded successfully"
+    })
+
+
+})
+
 module.exports = { // fazlaca fonksyonu boyle dondurecegimiz icin
     register,
     getUser,
     login,
-    logout
+    logout,
+    imageUpload
 };
 
 

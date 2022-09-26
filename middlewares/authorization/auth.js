@@ -27,7 +27,7 @@ const getAccessToRoute = (req, res, next) =>{
         console.log(accessToken);
         jwt.verify(accessToken,process.env.JWT_SECRET_KEY,(err,decodedToken)=>{ // dogrula
             if(err){
-                return next(console.log(new CustomError(err,100)));
+                return next(new CustomError(err,401)); //return next(console.log(new CustomError(err,100)));
             }
             // buradaki else i kaldırdınn
             
