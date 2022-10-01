@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto")
 
 const UserSchema = new Schema({
     name : {
@@ -51,7 +52,14 @@ const UserSchema = new Schema({
     blocked: { // kullanicinin blokladigi biri var mı
         type: Boolean,
         default: false
+    },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpire: {
+        type: Date
     }
+    
 });
 
 // UserSchema Methods
@@ -72,9 +80,26 @@ UserSchema.methods.generateJwtFromUser = function(){
     return token;
 }
 
-// this kaydedilmeye hazır user ı gosteriyor. bunu unutma
+UserSchema.methods.getResetPasswordToken = function(){
+    // create 15 digit word.
 
-UserSchema.pre("save", function(next){
+    const randomHexString = crypto.randomBytes(16).toString("hex");
+    
+    const resetPasswordToken = crypto
+    .createHash("SHA256")
+    .update(randomHexString) // token i ustte urettigimiz randomHexString den uretecegiz.
+    .digest("hex")
+
+    this.resetPasswordToken = resetPasswordToken;
+    // wrong: this.resetPasswordExpire = process.env.JWT_RESET_PASSWOR_EXPIRE
+    // wrong: this.resetPasswordToken = new Date(Date.now() + process.env.JWT_RESET_PASSWOR_EXPIRE);
+    this.resetPasswordExpire = new Date(Date.now() + parseInt(process.env.JWT_RESET_PASSWOR_EXPIRE));
+
+    return resetPasswordToken;
+}
+
+// this kaydedilmeye hazır user ı gosteriyor. bunu unutma
+UserSchema.pre("save", function(next){ // this is important when reset the password.
     if(!this.isModified("password")){
         console.log("password was not changed :D");
         next();
