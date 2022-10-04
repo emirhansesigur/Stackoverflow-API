@@ -1,10 +1,12 @@
 const CustomError = require("../../helpers/error/CustomError");
 const jwt = require("jsonwebtoken")
-const {isTokenIncluded, getAccessTokenFromHeader} = require("../../helpers/authorization/tokenHelpers")
+const asyncErrorWrapper = require("express-async-handler");
+const {isTokenIncluded, getAccessTokenFromHeader} = require("../../helpers/authorization/tokenHelpers");
+const User = require("../../models/user");
 // bu bir middleware req, res, next i nasil aldigina dikkat et ,D
 const {JWT_SECRET_KEY} = process.env;
 
-const getAccessToRoute = (req, res, next) =>{
+const getAccessToRoute = asyncErrorWrapper ( async function (req, res, next){
 
     //Token var mı, gecerli mi bak, CustomError firlat
     if(!isTokenIncluded(req)){
@@ -34,7 +36,7 @@ const getAccessToRoute = (req, res, next) =>{
             console.log(decodedToken);
             
             req.user = { // boyle bir degisken olusturuluyor her yerden erisebilmek icin
-                id : decodedToken.id,
+                id : decodedToken.id,  //***
                 name : decodedToken.name
             };
 
@@ -42,8 +44,25 @@ const getAccessToRoute = (req, res, next) =>{
             
         });
 
-};
+});
+
+const getAdminAccess = asyncErrorWrapper ( async function (req, res, next){
+    // get the user, check if he is admin if not no access error, if yes give admin access.
+
+
+    
+    const {id} = req.user; // user id su * dan geliyor
+    const user = await User.findById(id);
+
+    if(user.role!== "admin"){
+        next(new CustomError("just admins can access this route", 403)); // 403 = forbidden
+    }
+
+    next();
+
+});
 
 module.exports = {
-    getAccessToRoute
+    getAccessToRoute,
+    getAdminAccess
 };

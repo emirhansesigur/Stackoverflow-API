@@ -50,7 +50,8 @@ const login = asyncErrorWrapper ( async function (req, res, next){
     if(validateUserInput(email, password) == undefined){
         return next(new CustomError("Check you input", 400));
     }
-    
+    //return next(new CustomError("User Not Found With That Email",400));
+
     const user = await User.findOne({ email }).select("+password") // User bi collection, hepsini iceriyor gibi dusun email gittik bulduk
 
     //console.log(user);
@@ -194,7 +195,7 @@ const forgotPassword = asyncErrorWrapper(async (req,res,next) => {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
 
-        user.save();
+        await user.save();
 
         return next(new CustomError("Email Could Not Be Sent",500));
     }    
