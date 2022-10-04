@@ -214,7 +214,7 @@ const resetPassword = asyncErrorWrapper(async (req,res,next) => {
     //console.log(password);
 
     if(!resetPasswordToken){
-        next(new CustomError("Please provide a valid token", 400));
+        return next(new CustomError("Please provide a valid token", 400));
     }
     
     let user = await User.findOne({
@@ -223,7 +223,7 @@ const resetPassword = asyncErrorWrapper(async (req,res,next) => {
 
     })
     if(!user){
-        next(new CustomError("Invaild token or Session Expired, 400"));
+        return next(new CustomError("Invaild token or Session Expired, 400"));
     }
 
     user.password = password;

@@ -15,7 +15,9 @@ const customErrorHandler = (err,req,res,next) => {
     if(customError.code === 11000){
         customError = new CustomError("duplicate key error. Please check your input", 400);
     }
-
+    if(customError.name = "CastError"){ // if id is valid to mongodb's style.
+        customError = new CustomError("Please provide a valid user id.", 400);
+    }
     console.log(customError.message, customError.status)
 
     res

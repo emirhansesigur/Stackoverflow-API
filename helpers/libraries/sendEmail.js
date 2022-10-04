@@ -35,7 +35,6 @@ const sendEmail = async (mailOptions) => {
 
       let info = await transporter.sendMail(mailOptions);
 
-      console.log("Message sent: %s", info.messageId);
 
 
 };

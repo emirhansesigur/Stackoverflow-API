@@ -1,23 +1,49 @@
-// const nodemailer = require("nodemailer");
+const User = require("../models/user");
+const asyncErrorWrapper = require("express-async-handler");
+const CustomError = require("../helpers/error/CustomError")
 
-// let transporter = nodemailer.createTransport({
-//     server: "gmail",
-//     host: 'smtp.gmail.com',
-//     port: process.env.SMTP_SERVER_PORT,
-//     auth: {
-//         user: 'emirhansesigur@gmail.com',
-//         pass: 'maptdudbdnawliko'
+const app = express();
+
+// const getSingleUser = (req, res){
+    
+//     const {id} = req.params;
+//     const user = await User.findById(id);
+    
+//     if(!user){
+//         return next(new CustomError("User is not found by the id.", 400));
 //     }
-// });
-
-// let mailOptions = {
-//     from : 'emirhansesigur@gmail.com',
-//     to : 'emirhansesigur@gmail.com',
-//     html: '<h3>Title :D</h3>'
+    
+//     res
+//     .status(200)
+//     .json({
+//         success: true,
+//         user: user
+//     })
 // }
 
-// transporter.sendMail(mailOptions, (err, data)=>{
-//     if(err) console.log(err);
-//     else console.log("mail gonderildi.");
+const getSingleUser = errorWrapper(async(req,res,next) => {
+    
+    const {id} = req.params;
+    
+    const user = await User.findById(id);
 
-// })
+    return res
+    .status(200)
+    .json({
+        success : true,
+        data : user
+    });
+});
+
+
+app.get("/",getSingleUser);
+
+
+app.listen(5000, ()=>{
+    console.log(`started on ${PORT}`);
+})
+
+
+
+
+
