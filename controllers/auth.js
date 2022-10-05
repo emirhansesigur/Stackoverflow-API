@@ -243,6 +243,23 @@ const resetPassword = asyncErrorWrapper(async (req,res,next) => {
 
 });
 
+const editDetails = asyncErrorWrapper(async (req,res,next) => {
+    const editData = req.body;
+
+    const user = await User.findByIdAndUpdate(req.user.id, editData, {
+        new:true,
+        valitation:true
+});
+    
+
+    res
+    .status(200)
+    .json({
+        success: true,
+        data: user
+    })
+
+});
 
 module.exports = { // fazlaca fonksyonu boyle dondurecegimiz icin
     register,
@@ -251,7 +268,8 @@ module.exports = { // fazlaca fonksyonu boyle dondurecegimiz icin
     logout,
     imageUpload,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    editDetails
 };
 
 

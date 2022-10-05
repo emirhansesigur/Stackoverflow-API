@@ -32,9 +32,9 @@ const getAccessToRoute = asyncErrorWrapper ( async function (req, res, next){
                 return next(new CustomError(err,401)); //return next(console.log(new CustomError(err,100)));
             }
             // buradaki else i kaldırdınn
-            
-            console.log(decodedToken);
-            
+
+            console.log(decodedToken); 
+            // decoded id, name;
             req.user = { // boyle bir degisken olusturuluyor her yerden erisebilmek icin
                 id : decodedToken.id,  //***
                 name : decodedToken.name
