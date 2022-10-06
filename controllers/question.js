@@ -1,17 +1,27 @@
-// bi fonks gelecek.
+const Question = require("../models/question");
+const asyncErrorWrapper = require("express-async-handler");
 
 
-const getAllQuestions = ((req, res, next)=>{
-    
+
+const askNewQuestion = asyncErrorWrapper ( async function (req, res, next){
+
+    const information = req.body;
+    const question = await Question.create({
+        ...information,
+        user: req.user.id
+    })
+
     res
     .status(200)
     .json({
-        success : true,
-        name: "lorem100"
-    });
+        success:true,
+        data: question
+    })
 
-})
+});
 
-module.exports = { // fazlaca fonksyonu boyle dondurecegimiz icin
-    getAllQuestions
+
+
+module.exports = {
+    askNewQuestion
 };

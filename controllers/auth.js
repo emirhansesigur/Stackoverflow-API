@@ -14,7 +14,7 @@ const sendEmail = require("../helpers/libraries/sendEmail")
 const register = asyncErrorWrapper ( async function (req, res, next){
     
     const {name, email, password, role} = req.body;
-
+    
 
 
 // after asyncErrorWrapper    
