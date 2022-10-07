@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const asyncErrorWrapper = require("express-async-handler");
 const {isTokenIncluded, getAccessTokenFromHeader} = require("../../helpers/authorization/tokenHelpers");
 const User = require("../../models/user");
+const Question = require("../../models/question");
 // bu bir middleware req, res, next i nasil aldigina dikkat et ,D
 const {JWT_SECRET_KEY} = process.env;
 
@@ -62,7 +63,23 @@ const getAdminAccess = asyncErrorWrapper ( async function (req, res, next){
 
 });
 
+const getQuestionOwnerAccess = asyncErrorWrapper ( async function (req, res, next){
+
+    const userId = req.user.id;
+    const questionId = req.params.id;
+
+    const question = await Question.findById(questionId);
+
+    if(question.user != userId){
+        return next(new CustomError("Only owner can handle to this route.", 403)); // 403 forbidden
+    }
+    next();
+    
+});
+
+
 module.exports = {
     getAccessToRoute,
-    getAdminAccess
+    getAdminAccess,
+    getQuestionOwnerAccess
 };
