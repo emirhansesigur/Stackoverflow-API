@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto")
+const Question = require("./question");
 
 const UserSchema = new Schema({
     name : {
@@ -116,6 +117,12 @@ UserSchema.pre("save", function(next){ // this is important when reset the passw
 
 })
 
+UserSchema.post("remove", async function(){
+
+    await Question.deleteMany({
+        user: this._id
+    })
+});
 // Save user to mongodb database
 const User = mongoose.model("User",UserSchema ) // burada "User" yazdık ama users kollection ı olusturacak
 

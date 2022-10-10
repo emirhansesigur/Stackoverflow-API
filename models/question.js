@@ -24,10 +24,14 @@ const QuestionSchema = new Schema({
         type: mongoose.Schema.ObjectId,
         required: true,
         ref: "User"
-    }
-
-
-
+    },
+    likes: [
+        {
+        //keep in an array to the ones who has liked to the question.
+        
+            type: mongoose.Schema.ObjectId,
+            ref: "User"
+    }]
 })
 
 QuestionSchema.pre("save", function(next){
