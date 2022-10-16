@@ -16,7 +16,7 @@ const QuestionSchema = new Schema({
         minlength: [20 ,"you need to provide a content at list 20 characters"]
     },
     createdAt: {
-        type: String,
+        type: Date,
         default: Date.now()
     },
     slug : String,
@@ -31,7 +31,13 @@ const QuestionSchema = new Schema({
         
             type: mongoose.Schema.ObjectId,
             ref: "User"
-    }]
+    }],
+    answer: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "Answer" // answer collection ına referans verir.
+        }
+    ]
 })
 
 QuestionSchema.pre("save", function(next){

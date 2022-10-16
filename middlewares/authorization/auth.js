@@ -4,6 +4,7 @@ const asyncErrorWrapper = require("express-async-handler");
 const {isTokenIncluded, getAccessTokenFromHeader} = require("../../helpers/authorization/tokenHelpers");
 const User = require("../../models/user");
 const Question = require("../../models/question");
+const Answer = require("../../models/answer");
 // bu bir middleware req, res, next i nasil aldigina dikkat et ,D
 const {JWT_SECRET_KEY} = process.env;
 
@@ -74,12 +75,27 @@ const getQuestionOwnerAccess = asyncErrorWrapper ( async function (req, res, nex
         return next(new CustomError("Only owner can handle to this route.", 403)); // 403 forbidden
     }
     next();
-    
 });
 
+const getAnswerOwnerAccess = asyncErrorWrapper ( async function (req, res, next){
+    // go answer, check if user is correct
+    const userId = req.user.id;
+    const answer_id = req.params.answer_id;
+
+    const answer = await Answer.findById(answer_id);
+
+    
+
+    if(answer.user != userId){
+        return next(new CustomError("Only owner can handle to this route.", 403)); // 403 forbidden
+    }
+    next();
+
+});
 
 module.exports = {
     getAccessToRoute,
     getAdminAccess,
-    getQuestionOwnerAccess
+    getQuestionOwnerAccess,
+    getAnswerOwnerAccess
 };

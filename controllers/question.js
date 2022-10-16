@@ -10,7 +10,7 @@ const askNewQuestion = asyncErrorWrapper ( async function (req, res, next){
         ...information,
         user: req.user.id
     })
-
+    
     res
     .status(200)
     .json({

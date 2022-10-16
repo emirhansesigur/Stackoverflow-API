@@ -102,7 +102,7 @@ UserSchema.methods.getResetPasswordToken = function(){
 // this kaydedilmeye hazır user ı gosteriyor. bunu unutma
 UserSchema.pre("save", function(next){ // this is important when reset the password.
     if(!this.isModified("password")){
-        console.log("password was not changed :D");
+        //console.log("password was not changed :D");
         next();
     }
     bcrypt.genSalt(10, (err, salt)=>{
