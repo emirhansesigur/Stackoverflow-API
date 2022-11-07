@@ -25,6 +25,10 @@ const QuestionSchema = new Schema({
         required: true,
         ref: "User"
     },
+    likeCount:{
+        type:Number,
+        default:0
+    },
     likes: [
         {
         //keep in an array to the ones who has liked to the question.
@@ -32,6 +36,10 @@ const QuestionSchema = new Schema({
             type: mongoose.Schema.ObjectId,
             ref: "User"
     }],
+    answerCount:{
+        type:Number,
+        default:0
+    },
     answer: [
         {
             type: mongoose.Schema.ObjectId,

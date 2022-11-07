@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Question = require("./question");
+const Question = require("./Question");
 
 const Schema = mongoose.Schema;
 
@@ -37,6 +37,7 @@ AnswerSchema.pre("save", async function(next){
     const question = await Question.findById(this.question); //this.question: we save it in controllers, from req.params
     
     question.answer.push(this._id); // olusacak olan id si
+    question.answerCount = question.answer.length;
     
     await question.save();
     next();

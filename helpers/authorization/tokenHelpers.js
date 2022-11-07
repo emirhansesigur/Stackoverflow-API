@@ -23,7 +23,7 @@ const sendJwtToClient = (user, res) =>{
     });
 
 }
-
+    
 const isTokenIncluded = (req)=>{
     if(req.headers.authorization == undefined){
         return false;

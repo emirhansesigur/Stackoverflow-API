@@ -1,11 +1,11 @@
 const asyncErrorWrapper = require("express-async-handler");
-const Question = require("../models/question");
+const Question = require("../models/Question");
 const Answer = require("../models/answer");
 const {checkQuestionAndAnswerExist} = require("../middlewares/database/databaseErrorHelpers");
 const CustomError = require("../helpers/error/CustomError");
 
 const addNewAnswerToQuestion = asyncErrorWrapper ( async function (req, res, next){
-    
+
     const {question_id} = req.params;
     const user_id = req.user.id;
 
@@ -113,7 +113,7 @@ const deleteAnswer = asyncErrorWrapper ( async function (req, res, next){
     const index = question.answer.indexOf(answer_id);
     
     question.answer.splice(index, 1);
-    
+    question.answerCount = question.answer.length;
 
     await question.save();
     res.status(200)

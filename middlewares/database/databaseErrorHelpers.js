@@ -1,5 +1,5 @@
 const User = require("../../models/user");
-const Question = require("../../models/question");
+const Question = require("../../models/Question");
 const Answer = require("../../models/answer");
 
 const CustomError = require("../../helpers/error/CustomError");
@@ -50,6 +50,7 @@ const checkQuestionAndAnswerExist = asyncErrorWrapper ( async function (req, res
 });
 
 //return next(new CustomError("User Not Found With That Email",400));
+
 module.exports = {
     checkUserExist,
     checkQuestionExist,

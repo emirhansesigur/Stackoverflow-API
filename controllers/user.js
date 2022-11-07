@@ -27,10 +27,7 @@ const getAllUsers = asyncErrorWrapper ( async function (req, res, next){
 
     return res
     .status(200)
-    .json({
-        success:true,
-        users: users
-    })
+    .json(res.queryResult)
 });
 
 module.exports = {

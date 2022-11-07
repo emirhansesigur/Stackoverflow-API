@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const asyncErrorWrapper = require("express-async-handler");
 const {isTokenIncluded, getAccessTokenFromHeader} = require("../../helpers/authorization/tokenHelpers");
 const User = require("../../models/user");
-const Question = require("../../models/question");
+const Question = require("../../models/Question");
 const Answer = require("../../models/answer");
 // bu bir middleware req, res, next i nasil aldigina dikkat et ,D
 const {JWT_SECRET_KEY} = process.env;

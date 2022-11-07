@@ -1,7 +1,6 @@
-const Question = require("../models/question");
+const Question = require("../models/Question");
 const asyncErrorWrapper = require("express-async-handler");
 const CustomError = require("../helpers/error/CustomError");
-
 
 const askNewQuestion = asyncErrorWrapper ( async function (req, res, next){
 
@@ -17,6 +16,12 @@ const askNewQuestion = asyncErrorWrapper ( async function (req, res, next){
         success:true,
         data: question
     })
+
+});
+
+const getAllQuestions = asyncErrorWrapper ( async function (req, res, next){
+    
+    return res.status(200).json(res.queryResult);
 
 });
 
@@ -80,7 +85,7 @@ const likeQuestion =  asyncErrorWrapper ( async function (req, res, next){
     }
     // question.likes is an array.
     question.likes.push(req.user.id);
-
+    question.likeCount = question.likes.length;
     await question.save();
     
     return res
@@ -104,7 +109,7 @@ const undoLikeQuestion =  asyncErrorWrapper ( async function (req, res, next){
 
     // question.likes is an array.
     question.likes.remove(req.user.id);
-    
+    question.likeCount = question.likes.length;
     await question.save();
 
 
@@ -121,6 +126,7 @@ const undoLikeQuestion =  asyncErrorWrapper ( async function (req, res, next){
 
 
 module.exports = {
+    getAllQuestions,
     askNewQuestion,
     getSingleQuestion,
     editQuestion,
