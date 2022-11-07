@@ -2,8 +2,7 @@
 
 In this project, I created a backend Rest API that includes basic functionalities that a Q&A website provides. While doing that I tried to copy stackoverflow.com ‘s functionality which all programmers know and can anticipate how its operations run.
 
-This API can be consumed by any frontend technologies such as React, Angular etc. 
-
+Feel free to use this API when you create your UI projects.
 
 #### Some of the features:
 - Database connection
